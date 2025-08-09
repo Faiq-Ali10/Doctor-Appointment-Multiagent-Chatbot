@@ -7,6 +7,8 @@ The system consists of three specialized agents: **Supervisor**, **Booking**, an
 
 ## Project Structure
 
+```
+
 DOCTOR_APPOINTMENT_Multiagent/
 │
 ├── data/
@@ -41,6 +43,7 @@ DOCTOR_APPOINTMENT_Multiagent/
 ├── streamlit-ui.py # Streamlit frontend app
 └── .gitignore # Git ignore rules
 
+```
 
 ---
 
