@@ -1,0 +1,12 @@
+# Ignore environment variables file
+.env
+
+# Python cache files
+__pycache__/
+*.py[cod]
+
+# pytest cache
+.pytest_cache/
+
+# Virtual environment
+venv/
