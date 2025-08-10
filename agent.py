@@ -24,7 +24,7 @@ class AgentState(MessagesState, total=False):
     query: str
     next: str
     reasoning: str
-    id: str
+    id: int
     step_count: int 
 
 class DoctorAppointmentAgent:

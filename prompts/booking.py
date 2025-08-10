@@ -32,13 +32,13 @@ system_prompt = """You are a specialized agent to book, cancel or reschedule app
         For "Book Dr. John Doe on 7 aug 2025 at 8:30 am":
         - Call set_appointment with:
         - date_time: "07-08-2025 08:30"
-        - patient_id: "{user_id}"
+        - patient_id: {user_id}
         - doctor: "john doe"
         
         For "Cancel Dr. John Doe on 7 aug 2025 at 8:30 am":
         - Call set_appointment with:
         - date_time: "07-08-2025 08:30"
-        - patient_id: "{user_id}"
+        - patient_id: {user_id}
         - doctor: "john doe"
         
         For "Reschedule Dr. John Doe on 7 Aug 2025 at 8:30 am to Dr. Jane Smith on 9 Aug 2025 at 10:00 am":

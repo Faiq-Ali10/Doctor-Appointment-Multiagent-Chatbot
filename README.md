@@ -18,6 +18,7 @@ DOCTOR_APPOINTMENT_Multiagent/
 │ ├── init.py
 │ ├── booking.py # Booking agent prompts
 │ ├── information.py # Information agent prompts
+│ ├── qa.py # Q/A for answering medical concerns
 │ ├── router.py # Routing logic for agent selection
 │ └── supervisor.py # Supervisor agent prompts
 │
@@ -34,13 +35,16 @@ DOCTOR_APPOINTMENT_Multiagent/
 ├── utils/
 │ ├── init.py
 │ ├── llm.py # LLM interaction logic
+│ ├── doctor_info.py # fetch available doctors info
 │ └── messages.py # Message helper functions
 │
 ├── agent.py # Multi-agent orchestration logic
 ├── main.py # FastAPI backend application
 ├── routing_llm.py # LLM routing decisions
+├── qa_llm.py # answering medical concerns
 ├── requirements.txt # Python dependencies
 ├── streamlit-ui.py # Streamlit frontend app
+├── README.md
 └── .gitignore # Git ignore rules
 
 ```

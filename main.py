@@ -1,13 +1,12 @@
 import os
 from typing import cast
-from urllib import robotparser
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from pydantic import BaseModel,  field_validator
 from agent import DoctorAppointmentAgent, AgentState
 from langchain_core.messages import HumanMessage
 from utils.messages import get_consolidated_response
-import pandas as pd
+from utils.doctor_info import fetch_doctors_info
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 from fastapi import Request
@@ -23,7 +22,7 @@ os.environ["API_URL"] = str(os.getenv("API_URL"))
 
 app = FastAPI()
 
-agent = DoctorAppointmentAgent(0.1, 0.2, 0.1).get_app()
+agent = DoctorAppointmentAgent(0.1, 0.1, 0.1).get_app()
 
 class UserInput(BaseModel):
     query : str
@@ -46,13 +45,13 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 @app.post("/doctor-appointment")
 async def execute(data: UserInput) -> dict:
     router = decide(data.query)
-    if router == "Medical":
+    if router == "__Agent__":
         try:
             query = {
                 "messages": [HumanMessage(content=data.query)], 
                 "next": "supervisor",
                 "reasoning": "",
-                "id": data.id,
+                "id": float(data.id),
                 "query": data.query  
             }
             
@@ -71,9 +70,4 @@ async def execute(data: UserInput) -> dict:
     
 @app.get("/doctors-information")
 async def get_doctors():
-    try:
-        df = pd.read_csv("data/data.csv", usecols=["specialization", "doctor_name"])
-        unique_doctors = df.drop_duplicates().reset_index(drop=True)
-        return unique_doctors.to_dict(orient="records")
-    except FileNotFoundError:
-        return {"error": "Doctors information is not available "}
+   return fetch_doctors_info()
