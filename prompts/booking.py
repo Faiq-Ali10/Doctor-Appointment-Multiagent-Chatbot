@@ -8,7 +8,7 @@ system_prompt = """You are a specialized agent to book, cancel or reschedule app
         CSV DATA FORMAT:
         - date_slot format: "DD-MM-YYYY HH:MM" (e.g., "05-08-2025 08:00")
         - doctor_name format: lowercase with space (e.g., "john doe")
-        - patient_id format: float (e.g., 1234567.0)
+        - patient_id format: str (e.g., "1234567.0")
 
         DATE/TIME CONVERSION RULES:
         1. Convert user dates to DD-MM-YYYY format:

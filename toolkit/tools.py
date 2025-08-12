@@ -49,11 +49,12 @@ def specialization_available(date : Annotated[str, "Date and time in DD-MM-YYYY 
         return output
     
 @tool
-def set_appointment(date: Annotated[str, "Date and time in DD-MM-YYYY format"], id: Annotated[float, "Patient ID"], doctor : Annotated[str, f"Valid doctor name in database: {', '.join(DOCTORS)}"]):
+def set_appointment(date: Annotated[str, "Date and time in DD-MM-YYYY format"], id: Annotated[str, "Patient ID"], doctor : Annotated[str, f"Valid doctor name in database: {', '.join(DOCTORS)}"]):
     """
     Set appointment or slot with the doctor.
     The parameters MUST be mentioned by the user in the query.
     """
+    f_id = float(id)
     if doctor not in DOCTORS:
        return f"There is no Doctor : {doctor} registered!" 
    
@@ -62,19 +63,20 @@ def set_appointment(date: Annotated[str, "Date and time in DD-MM-YYYY format"], 
     if len(availability) == 0:
         return f"No available appointments on {date} for Dr. {doctor}."
     elif len(availability) == 1:
-        df.loc[(df["date_slot"] == date)&(df["doctor_name"] == doctor)&(df["is_available"] == True), ['is_available','patient_to_attend']] = [False, id] 
+        df.loc[(df["date_slot"] == date)&(df["doctor_name"] == doctor)&(df["is_available"] == True), ['is_available','patient_to_attend']] = [False, f_id] 
         df.to_csv(f'data/data.csv', index = False)
 
         return f"Successfully got appointment on {date} for Dr. {doctor}."
     
 @tool
-def cancel_appointment(date: Annotated[str, "Date and time in DD-MM-YYYY format"], id: Annotated[float, "Patient ID"], doctor : Annotated[str, f"Valid doctor name in database: {', '.join(DOCTORS)}"]):
+def cancel_appointment(date: Annotated[str, "Date and time in DD-MM-YYYY format"], id: Annotated[str, "Patient ID"], doctor : Annotated[str, f"Valid doctor name in database: {', '.join(DOCTORS)}"]):
     """
     Canceling an appointment.
     The parameters MUST be mentioned by the user in the query.
     """
+    f_id = float(id)
     df = pd.read_csv("data/data.csv")
-    availability = df[(df["date_slot"] == date)&(df["doctor_name"] == doctor)&(df["is_available"] == False)&(df["patient_to_attend"] == float(id))]
+    availability = df[(df["date_slot"] == date)&(df["doctor_name"] == doctor)&(df["is_available"] == False)&(df["patient_to_attend"] == f_id)]
     if len(availability) == 0:
         return f"You don't have any appointment on {date}."
     elif len(availability) == 1:
@@ -84,13 +86,14 @@ def cancel_appointment(date: Annotated[str, "Date and time in DD-MM-YYYY format"
         return f"Successfully cancelled appointment on {date}."
     
 @tool
-def reschedule_appointment(old_date: Annotated[str, "Date and time in DD-MM-YYYY format"], id: Annotated[float, "Patient ID"], new_date: Annotated[str, "Date and time in DD-MM-YYYY format"], old_doctor : Annotated[str, f"Valid doctor name in database: {', '.join(DOCTORS)}"], new_doctor : Annotated[str, f"Valid doctor name in database: {', '.join(DOCTORS)}"]):
+def reschedule_appointment(old_date: Annotated[str, "Date and time in DD-MM-YYYY format"], id: Annotated[str, "Patient ID"], new_date: Annotated[str, "Date and time in DD-MM-YYYY format"], old_doctor : Annotated[str, f"Valid doctor name in database: {', '.join(DOCTORS)}"], new_doctor : Annotated[str, f"Valid doctor name in database: {', '.join(DOCTORS)}"]):
     """
     Rescheduling an appointment.
     The parameters MUST be mentioned by the user in the query.
     """
+    f_id = float(id)
     df = pd.read_csv("data/data.csv")
-    availability = df[(df["date_slot"] == old_date)&(df["doctor_name"] == old_doctor)&(df["is_available"] == False)&(df["patient_to_attend"] == float(id))]
+    availability = df[(df["date_slot"] == old_date)&(df["doctor_name"] == old_doctor)&(df["is_available"] == False)&(df["patient_to_attend"] == f_id)]
     if len(availability) == 0:
         return f"You don't have any appointment on {old_date}."
     elif len(availability) == 1:
