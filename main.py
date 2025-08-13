@@ -10,6 +10,7 @@ from utils.doctor_info import fetch_doctors_info
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 from fastapi import Request
+from fastapi.middleware.cors import CORSMiddleware 
 from routing_llm import decide
 
 load_dotenv()
@@ -21,6 +22,14 @@ os.environ["GROQ_API_KEY"] = str(os.getenv("GROQ_API_KEY"))
 os.environ["API_URL"] = str(os.getenv("API_URL"))
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 agent = DoctorAppointmentAgent(0.1, 0.1, 0.1).get_app()
 
